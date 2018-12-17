@@ -7,7 +7,7 @@
     "package": "aws cloudformation package --template-file template.yaml --output-template-file output.yaml --s3-bucket attachable-api-bucket",
     "deploy": "aws cloudformation deploy --template-file output.yaml --stack-name attachable-api --capabilities CAPABILITY_IAM",
     "qd": "npm run package && npm run deploy",
-    "deploy:test": "aws cloudformation deploy --template-file output.yaml --stack-name attachable-api --capabilities CAPABILITY_IAM"
+    "deploy:test": "aws cloudformation package && aws cloudformation deploy --template-file output.yaml --stack-name attachable-api --capabilities CAPABILITY_IAM --parameter-overrides DestinationLambdaARN=arn:aws:lambda:us-east-1:375983427419:function:lambda-create-email-template-a-CreateEmailTemplate-1DH52GPPRKP05 DestinationLambdaRole=lambda-create-email-templa-CreateEmailTemplateRole-1P35K2YMXSKE6"
   },
   "repository": {
     "type": "git",
