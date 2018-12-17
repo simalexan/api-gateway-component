@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Parameters:
+  DestinationLambdaARN:
+    Type: String
+    MinLength: 3
+    ConstraintDescription: 'Required.'
+  DestinationLambdaRole:
+    Type: String
+    MinLength: 3
+    ConstraintDescription: 'Required.'
+Resources:
+  AttachableApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      DefinitionBody:
+        swagger: 2.0
+        info:
+          title:
+            Ref: AWS::StackName
+        paths:
+          /create:
+            get:
+              responses: {}
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DestinationLambdaARN}/invocations
+  ApiPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Policy for executing the Lambda function
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action: 
+          - sts:AssumeRole
+      Roles:
+      - !Ref DestinationLambdaRole
+Outputs:
+  ApiUrl:
+    Value: !Sub https://${AttachableApi}.execute-api.${AWS::Region}.amazonaws.com/prod/create
+    Description: The URL of the API Gateway you invoke

@@ -1,0 +1,23 @@
+{
+  "name": "attachable-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "package": "aws cloudformation package --template-file template.yaml --output-template-file output.yaml --s3-bucket attachable-api-bucket",
+    "deploy": "aws cloudformation deploy --template-file output.yaml --stack-name attachable-api --capabilities CAPABILITY_IAM",
+    "qd": "npm run package && npm run deploy",
+    "deploy:test": "aws cloudformation deploy --template-file output.yaml --stack-name attachable-api --capabilities CAPABILITY_IAM"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simalexan/attachable-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/simalexan/attachable-api/issues"
+  },
+  "homepage": "https://github.com/simalexan/attachable-api#readme"
+}
