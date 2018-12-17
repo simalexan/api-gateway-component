@@ -4,11 +4,7 @@ Parameters:
   DestinationLambdaARN:
     Type: String
     MinLength: 3
-    ConstraintDescription: 'Required.'
-  DestinationLambdaRole:
-    Type: String
-    MinLength: 3
-    ConstraintDescription: 'Required.'
+    ConstraintDescription: 'Required. You need to specify an existing Lambda ARN which you want to invoke with this API'
 Resources:
   AttachableApi:
     Type: AWS::Serverless::Api
@@ -21,26 +17,20 @@ Resources:
             Ref: AWS::StackName
         paths:
           /create:
-            get:
+            post:
               responses: {}
               x-amazon-apigateway-integration:
                 httpMethod: POST
                 type: aws_proxy
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DestinationLambdaARN}/invocations
-  ApiPolicy:
-    Type: AWS::IAM::ManagedPolicy
+  ApiInvokePermission:
+    Type: AWS::Lambda::Permission
     Properties:
-      Description: Policy for executing the Lambda function
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-        - Sid: "AllowApiToFunction"
-          Effect: Allow
-          Action: lambda:InvokeFunction
-          Resource: !Ref DestinationLambdaARN
-      Roles:
-      - !Ref DestinationLambdaRole
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref DestinationLambdaARN
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${AttachableApi}/*/POST/create
 Outputs:
   ApiUrl:
     Value: !Sub https://${AttachableApi}.execute-api.${AWS::Region}.amazonaws.com/prod/create

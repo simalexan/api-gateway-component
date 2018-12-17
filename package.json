@@ -1,23 +1,23 @@
 {
-  "name": "attachable-api",
+  "name": "api-gateway-component",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "package": "aws cloudformation package --template-file template.yaml --output-template-file output.yaml --s3-bucket attachable-api-bucket",
-    "deploy": "aws cloudformation deploy --template-file output.yaml --stack-name attachable-api --capabilities CAPABILITY_IAM",
+    "package": "aws cloudformation package --template-file template.yaml --output-template-file output.yaml --s3-bucket api-gateway-component-bucket",
+    "deploy": "aws cloudformation deploy --template-file output.yaml --stack-name api-gateway-component --capabilities CAPABILITY_IAM",
     "qd": "npm run package && npm run deploy",
-    "deploy:test": "aws cloudformation package && aws cloudformation deploy --template-file output.yaml --stack-name attachable-api --capabilities CAPABILITY_IAM --parameter-overrides DestinationLambdaARN=arn:aws:lambda:us-east-1:375983427419:function:lambda-create-email-template-a-CreateEmailTemplate-1DH52GPPRKP05 DestinationLambdaRole=lambda-create-email-templa-CreateEmailTemplateRole-1P35K2YMXSKE6"
+    "deploy:test": "npm run package && aws cloudformation deploy --template-file output.yaml --stack-name api-gateway-component --capabilities CAPABILITY_IAM --parameter-overrides DestinationLambdaARN=arn:aws:lambda:us-east-1:375983427419:function:aws-serverless-repository-aaa-CreateEmailTemplate-BPREFJ9VIX5X"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/simalexan/attachable-api.git"
+    "url": "git+https://github.com/simalexan/api-gateway-component.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Aleksandar Simovic <alexander.simovic@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/simalexan/attachable-api/issues"
+    "url": "https://github.com/simalexan/api-gateway-component/issues"
   },
-  "homepage": "https://github.com/simalexan/attachable-api#readme"
+  "homepage": "https://github.com/simalexan/api-gateway-component#readme"
 }
